@@ -1,0 +1,33 @@
+# Instalasi Library
+!pip install pygal plotly pandas
+
+import pandas as pd
+import pygal
+import plotly.express as px
+from IPython.display import display, SVG
+
+# Load Dataset
+file_path = "cleaned_dataset.csv"
+df = pd.read_csv(file_path)
+
+# Menampilkan 5 data pertama
+display(df.head())
+
+# ---- VISUALISASI PYGAL ----
+chart = pygal.Bar()
+chart.title = "Visualisasi Data dengan Pygal"
+
+# Memilih kolom numerik pertama
+numerical_column = df.select_dtypes(include=['number']).columns[0]
+
+# Tambahkan data ke grafik batang
+for index, value in enumerate(df[numerical_column][:10]):  # Ambil 10 data pertama
+    chart.add(f"Data {index+1}", value)
+
+# Tampilkan Grafik Pygal
+chart_svg = chart.render()
+display(SVG(chart_svg))
+
+# ---- VISUALISASI PLOTLY ----
+fig = px.scatter(df, x=numerical_column, y=numerical_column, title="Scatter Plot dengan Plotly")
+fig.show()
